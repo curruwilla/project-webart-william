@@ -1,0 +1,112 @@
+{{ head|raw }}
+
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-sm-12 col-md-7">
+            <div class="block-content">
+                <h1>Cadastro de usuários:</h1>
+                <form class="add_user" action="{{ base }}/user/add" method="post" enctype="multipart/form-data">
+                    <div class="ajax_response">{{ flash }}</div>
+                    {{ csrf_input|raw }}
+
+                    {% if user_id %}
+                        <input type="hidden" name="id" value="{{ user_id }}">
+                    {% endif %}
+
+                    {% if user.thumb %}
+                        <img class="img-thumbnail mb-3" src="{{ image(user.thumb(), 150) }}" alt="{{ user.first_name }}">
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label for="thumb">Foto</label>
+                        <input type="file" class="form-control-file" name="thumb" id="thumb">
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="first_name">Primeiro nome</label>
+                                <input type="text" class="form-control" name="first_name" id="first_name"  value="{{ user.first_name }}" required>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="last_name">Sobrenome</label>
+                                <input type="text" class="form-control" name="last_name" id="last_name" value="{{ user.last_name }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" name="email" id="email" value="{{ user.email }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" class="form-control" name="password" id="password">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="genre">Gênero</label>
+                        <select class="form-control" name="genre" id="genre">
+                            <option value="male" {{ user.genre == "male" ? "selected" : "" }}>Masculino</option>
+                            <option value="female" {{ user.genre == "female" ? "selected" : "" }}>Feminino</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="document">Documento</label>
+                        <input type="text" class="form-control" name="document" id="document" value="{{ user.document }}">
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                </form>
+            </div>
+
+            {% if users %}
+                <div class="block-content">
+                    <h1>Lista de usuários:</h1>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Documento</th>
+                            <th scope="col">Ação</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set i = 0 %}
+                        {% for user in users %}
+                            {% set i = i + 1 %}
+                            <tr class="remove_user" id="{{ user.id }}">
+                                <th scope="row">{{ i }}</th>
+                                <td>{{ user.fullName }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.document }}</td>
+                                <td width="20%">
+                                    <a href="{{ base }}/&id={{ user.id }}" title="Editar Usuário" class="btn btn-sm btn-info"><i class="bi bi-pencil"></i></a>
+                                    <span rel="remove_user" id="{{ user.id }}" title="Remover Usuário" class="btn btn-sm btn-warning delete_action"><i class="bi bi-x-circle"></i></span>
+                                    <span rel="remove_user" id="{{ user.id }}" callback="{{ base }}/user/remove/{{ user.id }}" title="Confirmar remoção Usuário" class="btn btn-sm btn-danger delete_action_confirm" style="display: none"><i class="bi bi-x-circle"></i></span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+<div class="ajax_load">
+    <div class="ajax_load_box">
+        <div class="ajax_load_box_circle"></div>
+        <p class="ajax_load_box_title">Aguarde, carregando...</p>
+    </div>
+</div>
+
+{{ footer|raw }}

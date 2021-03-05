@@ -1,0 +1,37 @@
+{
+  "name": "william/webartproject",
+  "description": "Projeto",
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "authors": [
+    {
+      "name": "William Alvares",
+      "email": "william.alvares@wapstore.com.br",
+      "homepage": "https://www.webart.com.br/",
+      "role": "Developer"
+    }
+  ],
+  "config": {
+    "vendor-dir": "vendor"
+  },
+  "autoload": {
+    "psr-4": {
+      "Source\\": "source/"
+    },
+    "files": [
+      "source/Boot/Config.php",
+      "source/Boot/Helpers.php"
+    ]
+  },
+  "require": {
+    "php": "^7.1",
+    "ext-pdo": "^7.1",
+    "coffeecode/router": "^1.0",
+    "coffeecode/uploader": "^1.0",
+    "coffeecode/cropper": "^1.0",
+    "coffeecode/optimizer": "^1.0",
+    "twig/twig": "^3.0",
+    "monolog/monolog": "^2.2",
+    "ext-json": "*"
+  }
+}
